@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znsd.ssm.Dao.StuDao">
+	<resultMap type="com.znsd.ssm.entities.Stu" id="stuMap">
+		<id property="sid" column="sid"/>
+		<result column="sname" property="sname"/>
+		<result property="sex" column="sex"/>
+		<result property="hobby" column="hobby"/>
+		<association property="cla" javaType="com.znsd.ssm.entities.Cla">
+			<id property="cid" column="cid"/>
+			<result property="cname" column="cname"/>
+		</association>
+	</resultMap>
+    <select id="limit" resultMap="stuMap">
+        SELECT * FROM Stu s LEFT JOIN Cla c ON s.cid =c.cid limit #{page},#{limit}
+    </select>
+    <select id="stuQuery" resultMap="stuMap">
+        SELECT * FROM Stu s inner join Cla c on s.cid =c.cid
+    </select>
+    <select id="count" parameterType="com.znsd.ssm.entities.Stu" resultType="java.lang.Integer">
+        SELECT count(*) FROM Stu 
+    </select>
+    <select id="queryId"  resultType="com.znsd.ssm.entities.Cla">
+        SELECT * from Cla where cname=#{cname} 
+    </select>
+    <insert id="stuadd" parameterType="com.znsd.ssm.entities.Stu">
+    	insert into stu(sname,sex,hobby,cid) values(#{sname},#{sex},#{hobby},#{cla.cid})
+    </insert>
+	<update id="stuUpdate" parameterType="com.znsd.ssm.entities.Stu">
+    	update stu set sname=#{sname},sex=#{sex},hobby=#{hobby} where sid=#{sid}
+    </update>
+    <delete id="studelete" parameterType="com.znsd.ssm.entities.Stu">
+    	delete from stu where sid=#{sid}
+    </delete>
+</mapper>

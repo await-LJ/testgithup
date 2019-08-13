@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+
+<body>
+<table id="homepage"></table>
+	<div style="margin-bottom: 5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"onclick="marager_tool.add()">添加</a>
+		<a href="#" class="easyui-linkbutton"iconCls="icon-edit" plain="true" onclick="marager_tool.edit()">修改</a> 
+		<a href="#"class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="marager_tool.remove()">删除</a>
+	</div>
+	<form id="manager_add">
+		<p>
+			姓名：<input type="text" name="name" class="textbox"style="width: 200px;">
+		</p>
+		<p data-toggle="topjui-radio">
+			<input class="easyui-radiobutton" name="sex" value="1" label="男:">
+		</p>
+		 <p data-toggle="topjui-radio">
+			<input class="easyui-radiobutton" name="sex" value="0" label="女:">
+		</p>
+		
+		<p>
+			手机号：<input id="phone" name="phone" style="width: 200px;">
+		</p>
+		<p>
+			班级：<input id="cc" name="cname" class="cid">
+		</p>
+	</form>
+	<form id="manager_update">
+		<input name="edit_id" class="textbox" type="hidden">
+		<p>
+			姓名：<input type="text" name="edit_name" class="textbox"style="width: 200px;">
+		</p>
+		<p data-toggle="topjui-radio">
+			<input class="easyui-radiobutton" name="edit_sex" value="1" label="男:">
+		</p>
+		 <p data-toggle="topjui-radio">
+			<input class="easyui-radiobutton" name="edit_sex" value="0" label="女:">
+		</p>
+		
+		<p>
+			手机号：<input id="phone" name="edit_phone" style="width: 200px;">
+		</p>
+		<p>
+			班级：<input id="edit_cc" name="edit_cname" class="cid">
+		</p>
+		
+	</form>
+	
+</body>
+
+<link rel="stylesheet" type="text/css"
+	href="easyui/themes/default/easyui.css" />
+
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css" />
+
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+
+<script type="text/javascript" src="js/homepage.js"></script>
+
+</html>

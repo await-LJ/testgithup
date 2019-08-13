@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.znsd.ssm.Dao.StuDao">
+	<resultMap type="com.znsd.ssm.entities.Cla" id="ClaMap">
+		<id property="cid" column="cid"/>
+			<result property="cname" column="cname"/>
+	</resultMap>
+    <select id="query" resultMap="ClaMap">
+        SELECT * FROM Cla
+    </select>
+    <insert id="claadd" parameterType="com.znsd.ssm.entities.Cla">
+    	insert into cla(cname) values(#{cname})
+    </insert>
+	<update id="claUpdate" parameterType="com.znsd.ssm.entities.Cla">
+    	update stu set cname=#{cname} where cid=#{cid}
+    </update>
+    <delete id="cladelete" parameterType="com.znsd.ssm.entities.Cla">
+    	delete from cla where cid=#{cid}
+    </delete>
+</mapper>

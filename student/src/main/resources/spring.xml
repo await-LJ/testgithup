@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+<!-- 配置c3p0连接池属性 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/stu" />
+		<property name="user" value="root" />
+		<property name="password" value="5741" />
+		<!-- 队列中的最小连接数 -->
+		<property name="minPoolSize" value="15"></property>
+		<!-- 队列中的最大连接数 -->
+		<property name="maxPoolSize" value="25"></property>
+		<!-- 当连接耗尽时创建的连接数 -->
+		<property name="acquireIncrement" value="15"></property>
+		<!-- 等待时间 -->
+		<property name="checkoutTimeout" value="10000"></property>
+		<!-- 初始化连接数 -->
+		<property name="initialPoolSize" value="20"></property>
+		<!-- 最大空闲时间，超出时间连接将被丢弃 -->
+		<property name="maxIdleTime" value="20"></property>
+		<!-- 每隔60秒检测空闲连接 -->
+		<property name="idleConnectionTestPeriod" value="60000"></property>
+	</bean>
+
+	<!-- 配置sessionfactory -->
+	<bean id="sqlSessionFactorByan" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 加载数据源对象，spring的配置方式 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 读取Mapper所在的包的路径 -->
+		<property name="mapperLocations" value="classpath:com/znsd/ssm/mapper/*.xml" />
+		
+	</bean>
+
+	<!-- 配置事务 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 事务的通知方式 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="query*" propagation="REQUIRED" />
+
+			<tx:method name="save*" propagation="REQUIRED" />
+
+			<tx:method name="del*" propagation="REQUIRED" />
+
+			<tx:method name="update*" propagation="REQUIRED" />
+
+			<tx:method name="*"  read-only="false" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- AOP切面拦截事务,事务一定是加在业务层 -->
+	<aop:config>
+		<aop:pointcut id="serviceMethod"
+			expression="execution(* com.znsd.ssm.service.*.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="serviceMethod" />
+	</aop:config>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+
+		<property name="basePackage" value="com.znsd.ssm.Dao" />
+
+	</bean>
+	<!-- 配置扫描器 -->    
+	<context:component-scan base-package="com.znsd.ssm">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan> 
+	
+</beans>
